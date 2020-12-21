@@ -9,7 +9,6 @@ import com.teamcenter.rac.kernel.TCComponent;
 import com.teamcenter.rac.kernel.TCComponentDataset;
 import com.teamcenter.rac.kernel.TCComponentDatasetDefinition;
 import com.teamcenter.rac.kernel.TCComponentTcFile;
-import com.teamcenter.rac.kernel.TCException;
 
 public class RacDatasetUtil {
 	
@@ -79,7 +78,7 @@ public class RacDatasetUtil {
 	        	System.out.println("下载文件异常：" + folderName + "/" + fileName);
 	        }
 
-	        String info = fileName + " = " + datasetName;
+	        System.out.println(fileName + " = " + datasetName);
 	      }
 	      return fileNames;
 	  }

@@ -1,16 +1,14 @@
 package com.hhc.sy.download;
 
+import java.util.List;
+
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.wb.swt.SWTResourceManager;
 
 import com.hhc.sy.custonms.util.MyRacDatasetFile;
 
-import org.eclipse.swt.layout.FillLayout;
-
-import java.util.List;
-
-import org.eclipse.swt.SWT;
 import swing2swt.layout.BorderLayout;
 
 public class DatasetDownloadApplication {

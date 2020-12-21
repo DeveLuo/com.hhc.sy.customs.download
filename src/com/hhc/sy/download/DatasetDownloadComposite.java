@@ -1,15 +1,5 @@
 package com.hhc.sy.download;
 
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.DirectoryDialog;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.FileDialog;
-import org.eclipse.swt.widgets.Listener;
-
-import swing2swt.layout.BorderLayout;
-
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -17,32 +7,39 @@ import java.util.List;
 import java.util.Set;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
-import org.eclipse.swt.widgets.Table;
+import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.layout.FormAttachment;
+import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.layout.FormData;
-import org.eclipse.swt.layout.FormAttachment;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.DirectoryDialog;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Listener;
+import org.eclipse.swt.widgets.Table;
+import org.eclipse.swt.widgets.TableColumn;
+import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.SWTResourceManager;
 
 import com.hhc.sy.custonms.util.MyRacDatasetFile;
 import com.teamcenter.rac.kernel.TCException;
-import com.teamcenter.rac.util.MessageBox;
 
 import nebula.Dialog;
+import swing2swt.layout.BorderLayout;
 import swing2swt.layout.FlowLayout;
-import org.eclipse.swt.widgets.TableColumn;
-import org.eclipse.swt.widgets.TableItem;
-import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.layout.FillLayout;
 
 public class DatasetDownloadComposite extends Composite {
 	private Table contextTable;
 	private Text pathText;
 	private Composite typeComposite;
-	private List<MyRacDatasetFile> datasetFiles;
+	List<MyRacDatasetFile> datasetFiles;
 
 	/**
 	 * Create the composite.
@@ -75,13 +72,36 @@ public class DatasetDownloadComposite extends Composite {
 		downloadComposite.setLayout(fl_downloadComposite);
 		downloadComposite.setLayoutData(BorderLayout.SOUTH);
 		
-		final Button downloadButton = new Button(downloadComposite, SWT.NONE);
-		FormData fd_downloadButton = new FormData();
-		fd_downloadButton.left = new FormAttachment(0);
-		fd_downloadButton.top = new FormAttachment(60);
-		fd_downloadButton.right = new FormAttachment(100);
-		downloadButton.setLayoutData(fd_downloadButton);
-		downloadButton.setText("下载");
+		pathText = new Text(downloadComposite, SWT.BORDER);
+		FormData fd_text = new FormData();
+//		fd_text.right = new FormAttachment(0, 358);
+		fd_text.top = new FormAttachment(0, 7);
+		fd_text.bottom = new FormAttachment(100, -37);
+		fd_text.left = new FormAttachment(0);
+		pathText.setLayoutData(fd_text);
+		
+		Button loadPathButton = new Button(downloadComposite, SWT.NONE);
+		fd_text.right = new FormAttachment(loadPathButton, -6);
+		FormData fd_loadPathButton = new FormData();
+		fd_loadPathButton.left = new FormAttachment(100, -65);
+		fd_loadPathButton.bottom = new FormAttachment(100, -37);
+		fd_loadPathButton.top = new FormAttachment(0, 7);
+//		fd_loadPathButton.left = new FormAttachment(0, 364);
+		fd_loadPathButton.right = new FormAttachment(100);
+		loadPathButton.setLayoutData(fd_loadPathButton);
+		loadPathButton.setText("浏览...");
+		
+		Composite composite_1 = new Composite(downloadComposite, SWT.NONE);
+		composite_1.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 0));
+		FormData fd_composite_1 = new FormData();
+		fd_composite_1.right = new FormAttachment(loadPathButton, 0, SWT.RIGHT);
+		fd_composite_1.left = new FormAttachment(0);
+		fd_composite_1.top = new FormAttachment(pathText, 7);
+		fd_composite_1.bottom = new FormAttachment(100);
+		composite_1.setLayoutData(fd_composite_1);
+		
+		final Button downloadButton = new Button(composite_1, SWT.NONE);
+		downloadButton.setText("  下载  ");
 		downloadButton.addSelectionListener(new SelectionListener() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
@@ -130,21 +150,14 @@ public class DatasetDownloadComposite extends Composite {
 			}
 		});
 		
-		pathText = new Text(downloadComposite, SWT.BORDER);
-		FormData fd_text = new FormData();
-		fd_text.bottom = new FormAttachment(downloadButton, -7);
-		fd_text.top = new FormAttachment(0, 7);
-		fd_text.left = new FormAttachment(0);
-		pathText.setLayoutData(fd_text);
-		
-		Button loadPathButton = new Button(downloadComposite, SWT.NONE);
-		fd_text.right = new FormAttachment(loadPathButton, -6);
-		FormData fd_loadPathButton = new FormData();
-		fd_loadPathButton.left = new FormAttachment(downloadButton, -118);
-		fd_loadPathButton.bottom = new FormAttachment(downloadButton, -7);
-		fd_loadPathButton.right = new FormAttachment(100);
-		loadPathButton.setLayoutData(fd_loadPathButton);
-		loadPathButton.setText("浏览...");
+		Button cancelButton = new Button(composite_1, SWT.NONE);
+		cancelButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				getShell().dispose();
+			}
+		});
+		cancelButton.setText("  取消  ");
 		loadPathButton.addSelectionListener(new SelectionListener() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
